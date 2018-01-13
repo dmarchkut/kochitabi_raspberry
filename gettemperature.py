@@ -78,7 +78,7 @@ if __name__ == '__main__':
     while True:
         try:
             readData()
-             send.post_server(t_fine)
+            send.post_server(t_fine)
         except KeyboardInterrupt:
     	    pass
         time.sleep(10)
