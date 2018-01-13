@@ -52,8 +52,8 @@ def compensate_T(adc_T):
 
 def setup():
 	osrs_t = 1			#Temperature oversampling x 1
-	osrs_p = 0			#Pressure oversampling x 1
-	osrs_h = 0			#Humidity oversampling x 1
+	osrs_p = 0			#Pressure Skipped 
+	osrs_h = 0			#Humidity Skipped
 	mode   = 3			#Normal mode
 	t_sb   = 5			#Tstandby 1000ms
 	filter = 0			#Filter off
