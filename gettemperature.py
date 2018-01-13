@@ -23,16 +23,15 @@ def writeReg(reg_address, data):
 def get_calib_param():
 	calib = []
 
-	for i in range (0x88,0x88+5):
+	for i in range (0x88,0x88+6):
 		calib.append(bus.read_byte_data(i2c_address,i))
 	digT.append((calib[1] << 8) | calib[0])
 	digT.append((calib[3] << 8) | calib[2])
 	digT.append((calib[5] << 8) | calib[4])
-
+	# ２の補数で表現されているので、符合bitである最上位bitが1の時に10進数で扱えるように変換する
 	for i in range(1,2):
 		if digT[i] & 0x8000:
 			digT[i] = (-digT[i] ^ 0xFFFF) + 1
-
 
 def readData():
     data = []
@@ -40,7 +39,6 @@ def readData():
         data.append(bus.read_byte_data(i2c_address,i))
     temp_raw = (data[0] << 12) | (data[1] << 4) | (data[2] >> 4)
     compensate_T(temp_raw)
-
 
 def compensate_T(adc_T):
     # globalな理由は気圧と湿度の制度を上げる為の計算に、気温情報を使っていた為
@@ -76,9 +74,6 @@ get_calib_param()
 
 if __name__ == '__main__':
     while True:
-        try:
-            readData()
-            send.post_server(t_fine)
-        except KeyboardInterrupt:
-    	    pass
+        readData()
+        send.post_server(t_fine)
         time.sleep(10)
