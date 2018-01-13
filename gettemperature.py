@@ -2,6 +2,7 @@
 
 from smbus2 import SMBus
 import time
+import sendtemperature as send
 
 bus_number  = 1
 # SDO = GND > 0x76
@@ -27,7 +28,6 @@ def get_calib_param():
 	digT.append((calib[1] << 8) | calib[0])
 	digT.append((calib[3] << 8) | calib[2])
 	digT.append((calib[5] << 8) | calib[4])
-
 
 	for i in range(1,2):
 		if digT[i] & 0x8000:
@@ -78,6 +78,7 @@ if __name__ == '__main__':
     while True:
         try:
             readData()
+             send.post_server(t_fine)
         except KeyboardInterrupt:
     	    pass
         time.sleep(10)
